@@ -9,7 +9,7 @@ const Load: React.FC = () => {
       <Spinner>
         <img src={Pokebola} alt="Loading..." />
       </Spinner>
-      <Text>Loading<Point>. . .</Point></Text>
+      <Text>Loading<Point> . . .</Point></Text>
     </Loader>
   );
 };

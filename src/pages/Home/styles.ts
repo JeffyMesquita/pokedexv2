@@ -21,3 +21,11 @@ export const Header = styled.header`
     color: #fff;
   }
 `;
+
+export const CardContainer = styled.ul`
+  padding-left: 0;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-evenly;
+`;

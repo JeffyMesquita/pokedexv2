@@ -61,8 +61,7 @@ interface Types {
   };
 }
 
-
-interface Pokemon {
+export interface Pokemon {
   abilities: Ability[];
   base_experience: number;
   forms: Form[];
@@ -88,14 +87,15 @@ interface AppContextData {
   pokemons: Pokemon[];
   offSetPage: number;
   urls: Url[];
+  arrayUrl: Url[];
   loading: boolean;
   setPokemons: (pokemons: Pokemon[]) => void;
   setOffSetPage: (value: number) => void;
   setUrls: (value: []) => void;
   setLoading: (value: boolean) => void;
-  getListPokemon: () => void;
-  getPokemonListUrl: () => void;
-  getPokemon: () => void;
+  getListPokemon: (value: number) => void;
+  getPokemonListUrl: (value: Url[]) => void;
+  getPokemon: (value: number) => void;
   handlePreviousPage: () => void;
   handleNextPage: () => void;
 }
@@ -105,67 +105,64 @@ const AppContext = createContext<AppContextData>({} as AppContextData);
 const AppProvider: React.FC = ({ children }) => {
   const [offSetPage, setOffSetPage] = useState(0);
   const [urls, setUrls] = useState([] as Url[]);
-  const [pokemons, setPokemons] = useState([] as Pokemon[]);  
+  const [arrayUrl, setArrayUrl] = useState([] as Url[]);
+  const [pokemons, setPokemons] = useState([] as Pokemon[]);
   const [loading, setLoading] = useState(false);
 
-  async function getListPokemon() {
+  async function getListPokemon(offSetPage: number) {
     try {
       const { data } = await api.get(`pokemon?limit=15&offset=${offSetPage}`);
 
       console.log(data);
 
       const arrayUrls = await data.results.map(
-        (results: { name: string }) => results.name,
+        (results: { url: string }) => results.url,
       );
 
       setUrls(arrayUrls);
       console.log(arrayUrls);
     } catch (error) {
       console.log('Ops, ocorreu um erro!' + error);
+    } finally {
+      getPokemonListUrl(urls);
     }
   }
 
-  async function getPokemonListUrl() {
-    const arrayPokemon = [];
+  const getPokemonListUrl = async (urls: Url[]) => {
+    console.log('Passei por aqui', urls); 
+      
+    try {
+      const data = await Promise.all(
+        urls.map(url =>
+          fetch(`${url}`)))
+      const json = await Promise.all(data.map(d => d.json()))
+      console.log('cheguei aqui', json); 
+      setPokemons(json);          
+    } catch (error) {
+      console.log(error);
 
-    for (let i = 0; i < urls.length; i++) {
-      const  url  = urls[i];   
-      console.log(url);
-      try { 
-        const { data } = await api.get(`pokemon/${url}/`);        
-
-        arrayPokemon.push(data);
-      } catch (error) {
-        console.log('Ops, ocorreu um erro!' + error);
-      }      
+      throw error;
+    } finally {
+      setLoading(false);
     }
-    console.log(arrayPokemon);
-    setPokemons([...pokemons, ...arrayPokemon]);
   }
 
-  async function getPokemon() {
-    await getListPokemon();
-    console.log(urls);
-    await getPokemonListUrl();
-    console.log(pokemons);
-    setLoading(false);
+  async function getPokemon(offSetPage: number) {
+    await getListPokemon(offSetPage); 
+    console.log('Passei por aqui', offSetPage, pokemons);    
   }
 
   function handleNextPage() {
-    setLoading(true);
-    setUrls([]);
-    setPokemons([]);
+    setLoading(true);    
     setOffSetPage(offSetPage + 15);
-    //console.log(offSetPage);
+    console.log(offSetPage);
   }
 
   function handlePreviousPage() {
     if (offSetPage !== 0) {
-      setLoading(true);
-      setUrls([]);
-      setPokemons([]);      
+      setLoading(true);           
       setOffSetPage(offSetPage - 15);
-      //console.log(offSetPage);
+      console.log(offSetPage);
     }
   }
 
@@ -176,6 +173,7 @@ const AppProvider: React.FC = ({ children }) => {
         offSetPage,
         urls,
         loading,
+        arrayUrl,
         setPokemons,
         setOffSetPage,
         setUrls,

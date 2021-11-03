@@ -14,14 +14,14 @@ export const Spinner = styled.article`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid #00000022;
+  border: 2px solid #00000022;
   border-left-color: #000000;
-  border-top-color: #000000;
-  animation: spin 1s linear infinite;
+  border-top-color: #000000;  
+  animation: spin 1s  linear infinite;
 
   img {
-    width: 75px;
-    height: 75px;
+    width: 73px;
+    height: 73px;
     border-radius: 50%;
   }
 

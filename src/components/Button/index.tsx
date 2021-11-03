@@ -1,4 +1,5 @@
 import React, { BaseHTMLAttributes } from 'react';
+import { useAppContext } from '../../contexts/AppContext';
 
 import { Container } from './styles';
 
@@ -7,6 +8,8 @@ interface ButtonProps extends BaseHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: React.FC<ButtonProps> = ({ title, ...rest }) => {
+  const { handleNextPage, handlePreviousPage } = useAppContext();
+
   return (
     <Container {...rest}>
       {title}
