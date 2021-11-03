@@ -1,17 +1,17 @@
 import React from 'react';
 import Provider from './contexts/';
+
+import GlobalStyle,  { Container } from '../src/styles/globals'
+
 import Home from './pages/Home';
-import { Container } from './styles';
-
-
-
 
 const App: React.FC = () => {
   return (
-    <Provider>
-      <Container>      
-        <Home />
-      </Container>      
+    <Provider>   
+      <GlobalStyle />
+      <Container>
+        <Home /> 
+      </Container>           
     </Provider>
   );
 }
