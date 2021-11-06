@@ -117,39 +117,40 @@ const AppProvider: React.FC = ({ children }) => {
 
       const arrayUrls = await data.results.map(
         (results: { url: string }) => results.url,
-      );
-
-      setUrls(arrayUrls);
-      console.log(arrayUrls);
+      );      
+      return arrayUrls;
     } catch (error) {
       console.log('Ops, ocorreu um erro!' + error);
-    } finally {
-      getPokemonListUrl(urls);
-    }
+    }         
   }
 
-  const getPokemonListUrl = async (urls: Url[]) => {
-    console.log('Passei por aqui', urls); 
-      
+  async function getPokemonListUrl(arrayUrls: Url[])  {
+    const arrayPokemon:Pokemon[] = [];
+    console.log('Passei por aqui', arrayUrls);       
     try {
       const data = await Promise.all(
-        urls.map(url =>
-          fetch(`${url}`)))
+        arrayUrls.map(arrayUrls =>
+          fetch(`${arrayUrls}`)))
       const json = await Promise.all(data.map(d => d.json()))
       console.log('cheguei aqui', json); 
-      setPokemons(json);          
+      json.map(pokemon => {
+        arrayPokemon.push(pokemon);
+      });         
     } catch (error) {
       console.log(error);
-
       throw error;
-    } finally {
-      setLoading(false);
-    }
+    } 
+    setPokemons([...arrayPokemon]);    
   }
 
   async function getPokemon(offSetPage: number) {
-    await getListPokemon(offSetPage); 
-    console.log('Passei por aqui', offSetPage, pokemons);    
+    setLoading(true);
+    const urls = await getListPokemon(offSetPage);
+    console.log(urls);
+    await getPokemonListUrl(urls);
+    setLoading(false);
+    window.navigator.vibrate([350]);
+    console.log('Pokemons', pokemons);     
   }
 
   function handleNextPage() {
@@ -165,6 +166,11 @@ const AppProvider: React.FC = ({ children }) => {
       console.log(offSetPage);
     }
   }
+
+  useEffect(() => {  
+    getPokemon(offSetPage);  
+    
+  }, [offSetPage]);
 
   return (
     <AppContext.Provider

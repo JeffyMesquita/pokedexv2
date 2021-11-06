@@ -7,7 +7,7 @@ export const Container = styled.button`
   font-family: 'Pokemon solid';
   width: 70px;
   height: 70px;
-  border-radius: 15px;
+  border-radius: 4px;
   border: 0;
   background: linear-gradient(315deg, #d41938, #dc0a2f);
   box-shadow: 7px 7px 14px #a1132b, -7px -7px 14px #ff1f45;

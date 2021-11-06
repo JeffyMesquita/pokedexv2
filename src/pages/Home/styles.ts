@@ -1,31 +1,28 @@
 import styled from 'styled-components';
 
-export const Container = styled.section`  
+export const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;  
-`;
-
-export const Header = styled.header`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-
-  h1 { 
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #fff;
-  }
+  margin: 0;
+  padding: 0;
 `;
 
 export const CardContainer = styled.ul`
-  padding-left: 0;
-	display: flex;
-	flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+  @media only screen and (max-width: 360px) {
+    margin: 0 auto;
+  }
+`;
+
+export const Footer = styled.footer`
+  display: flex;
 	flex-direction: row;
-	justify-content: space-evenly;
+	justify-content: space-between;  
+  margin-bottom: 20px;
 `;

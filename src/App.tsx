@@ -1,16 +1,17 @@
 import React from 'react';
 import Provider from './contexts/';
 
-import GlobalStyle,  { Container } from '../src/styles/globals'
+import GlobalStyle,  { Container } from '../src/styles/globals';
 
 import Home from './pages/Home';
+import  Routes  from './routes';
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <Provider>   
       <GlobalStyle />
       <Container>
-        <Home /> 
+        <Home />
       </Container>           
     </Provider>
   );
